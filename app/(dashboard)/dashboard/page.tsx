@@ -34,7 +34,7 @@ export default async function DashboardPage() {
       prisma.post.findMany({
         orderBy: { views: "desc" },
         select: { id: true, title: true, views: true, status: true },
-      }),
+      }) as Promise<Array<{ id: string; title: string; views: number; status: "DRAFT" | "PUBLISHED" }>>,
       prisma.newsletterSubscriber.count(),
     ]);
 
