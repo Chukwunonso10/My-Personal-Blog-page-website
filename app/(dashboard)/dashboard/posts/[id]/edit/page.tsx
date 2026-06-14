@@ -52,7 +52,7 @@ export default async function EditPostPage({ params }: Props) {
     coverImage: post.coverImage || "",
     categoryId: post.categoryId,
     status: post.status,
-    tagIds: post.tags.map((t) => t.id),
+    tagIds: post.tags.map((t: { id: string }) => t.id),
   };
 
   // Bind the post ID to the updatePost Server Action
