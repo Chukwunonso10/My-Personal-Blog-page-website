@@ -28,6 +28,7 @@ export async function subscribeNewsletter(formData: FormData): Promise<{ success
     const existing = await prisma.newsletterSubscriber.findUnique({
       where: { email: email.toLowerCase() },
     }).catch(() => null);
+    
 
     if (existing) {
       return {
