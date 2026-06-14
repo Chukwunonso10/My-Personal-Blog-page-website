@@ -120,6 +120,103 @@ When working with PostgreSQL, use indexes appropriately. For lookups on slug col
     publishedAt: new Date("2026-06-12T09:15:00Z"),
     author: { username: "Devon Sinclair", image: null },
     category: { name: "APIs", slug: "apis" }
+  },
+  "pauline-theology-romans": {
+    id: "mock-3",
+    title: "Pauline Theology: Exploring Justification by Faith in Romans",
+    slug: "pauline-theology-romans",
+    excerpt: "A systematic study of Paul's letters to the Romans, analyzing historical context, justification, and practical Christian duties.",
+    content: `
+Justification by faith is the cornerstone of Pauline theology, particularly articulated in the Epistle to the Romans. Understanding this doctrine requires analyzing both its historical context and its theological structure.
+
+## Historical and Theological Context
+
+In the first century, the relationship between Jewish law and the inclusion of Gentile believers was a source of significant debate. Paul argued that righteousness before God does not come from works of the law but through faith in Jesus Christ.
+
+<Callout type="info" title="Romans 1:16-17">
+  "For I am not ashamed of the gospel, for it is the power of God for salvation to everyone who believes, to the Jew first and also to the Greek."
+</Callout>
+
+### Key Concepts in Pauline Epistles
+
+1. **Grace (*Charis*)**: God's unmerited favor toward humans, who are incapable of earning salvation.
+2. **Righteousness (*Dikaiosyne*)**: Declared righteous forensically and covenantally before God.
+3. **Faith (*Pistis*)**: Trust, allegiance, and belief in the saving work of Christ.
+
+## Practical Duties of the Christian
+
+Paul does not divorce theology from action. In Romans 12, he outlines how the justified believer should live:
+- Presenting one's body as a living sacrifice.
+- Renewing the mind to discern God's will.
+- Exercising spiritual gifts in humility.
+    `,
+    coverImage: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=800&auto=format&fit=crop",
+    readingTime: 12,
+    views: 295,
+    publishedAt: new Date("2026-06-08T08:00:00Z"),
+    author: { username: "Alexander Mercer", image: null },
+    category: { name: "Bible Study", slug: "bible-study" }
+  },
+  "react-19-state-management": {
+    id: "mock-4",
+    title: "State Management in React 19: Beyond useEffect Hooks",
+    slug: "react-19-state-management",
+    excerpt: "Analyzing React 19 server actions, useActionState, and local optimization paradigms to eliminate unnecessary client-side lifecycle hook usage.",
+    content: `
+React 19 introduces a paradigm shift in how we handle state, especially regarding async data mutations. The days of relying heavily on \`useEffect\` and manual loading state tracking are coming to an end.
+
+## The Problem with useEffect
+
+Historically, developers used \`useEffect\` hooks to trigger fetches, sync data, and manage load indicators. This often led to race conditions, complex error handling, and bloated client-side code.
+
+\`\`\`typescript
+// The old, imperative way
+useEffect(() => {
+  let isMounted = true;
+  setLoading(true);
+  fetchData().then((res) => {
+    if (isMounted) {
+      setData(res);
+      setLoading(false);
+    }
+  });
+  return () => { isMounted = false; };
+}, []);
+\`\`\`
+
+## React 19 Actions
+
+With React 19, async transitions are first-class citizens. Functions passed to form actions automatically manage loading state for you.
+
+### useActionState Hook
+
+The new \`useActionState\` hook handles form submissions and action lifecycle seamlessly:
+
+\`\`\`typescript
+import { useActionState } from 'react';
+
+async function updateProfile(prevState, queryData) {
+  try {
+    await api.save(queryData);
+    return { success: true };
+  } catch (err) {
+    return { error: err.message };
+  }
+}
+
+const [state, formAction, isPending] = useActionState(updateProfile, null);
+\`\`\`
+
+- **isPending** automatically switches to true while the async function runs.
+- **state** holds the return value of the action.
+- Works natively with React Server Components.
+    `,
+    coverImage: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=800&auto=format&fit=crop",
+    readingTime: 7,
+    views: 184,
+    publishedAt: new Date("2026-06-11T14:30:00Z"),
+    author: { username: "Devon Sinclair", image: null },
+    category: { name: "Software Engineering", slug: "software-engineering" }
   }
 };
 
@@ -251,7 +348,7 @@ export default async function ArticlePage({ params }: Props) {
             {/* Meta header */}
             <div className="space-y-4">
               <span className="text-xs font-bold uppercase tracking-wider text-neutral-400">
-                {article.category.name}
+                {article.category?.name}
               </span>
               <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50 leading-tight">
                 {article.title}
@@ -264,14 +361,14 @@ export default async function ArticlePage({ params }: Props) {
               <div className="flex flex-wrap items-center gap-6 text-xs text-neutral-400 pt-4 border-y border-stone-200/60 dark:border-neutral-800/60 py-4">
                 <div className="flex items-center space-x-2">
                   <div className="w-6 h-6 rounded-full bg-stone-200 dark:bg-neutral-800 flex items-center justify-center font-semibold text-neutral-500 text-[10px]">
-                    {article.author.image ? (
+                    {article.author?.image ? (
                       <img src={article.author.image} alt="" className="w-full h-full rounded-full" />
                     ) : (
-                      (article.author.username || "Staff Writer").slice(0, 2).toUpperCase()
+                      (article.author?.username || "Staff Writer").slice(0, 2).toUpperCase()
                     )}
                   </div>
                   <span className="font-medium text-neutral-800 dark:text-neutral-200">
-                    {article.author.username || "Staff Writer"}
+                    {article.author?.username || "Staff Writer"}
                   </span>
                 </div>
                 <div className="flex items-center space-x-1.5">
@@ -330,7 +427,7 @@ export default async function ArticlePage({ params }: Props) {
                 {finalRelated.map((rel) => (
                   <div key={rel.slug} className="space-y-1">
                     <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">
-                      {rel.category.name}
+                      {rel.category?.name}
                     </span>
                     <h4 className="font-serif text-sm font-semibold tracking-tight text-neutral-900 dark:text-neutral-200 hover:underline">
                       <Link href={`/articles/${rel.slug}`}>{rel.title}</Link>
