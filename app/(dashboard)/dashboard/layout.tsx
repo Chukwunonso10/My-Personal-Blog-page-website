@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
+import { MobileNav } from "@/components/dashboard/mobile-nav";
 import { Show, UserButton } from "@clerk/nextjs";
 import { LayoutDashboard, FileText, PlusCircle, ArrowLeft, ShieldAlert } from "lucide-react";
 
@@ -121,6 +122,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
         {/* Mobile Header Banner */}
         <header className="h-14 border-b border-stone-200 dark:border-neutral-900 bg-white dark:bg-neutral-950 flex items-center justify-between px-6 md:hidden">
           <div className="flex items-center space-x-2">
+            <MobileNav />
             <span className="font-serif text-md font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
               Aletheia
             </span>
