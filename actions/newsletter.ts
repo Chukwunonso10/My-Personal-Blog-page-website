@@ -40,8 +40,6 @@ export async function subscribeNewsletter(formData: FormData): Promise<{ success
       data: {
         email: email.toLowerCase(),
       },
-    }).catch((e) => {
-      throw e;
     });
 
     return {
