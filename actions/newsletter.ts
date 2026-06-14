@@ -14,7 +14,7 @@ export type FormState = {
 
 export async function subscribeNewsletter(formData: FormData): Promise<{ success: boolean; message: string }> {
   const email = formData.get("email") as string;
-  
+
   const result = schema.safeParse({ email });
   if (!result.success) {
     return {
