@@ -38,7 +38,7 @@ export default async function DashboardPage() {
       prisma.newsletterSubscriber.count(),
     ]);
 
-    stats.totalViews = posts.reduce((sum, p) => sum + p.views, 0);
+    stats.totalViews = posts.reduce((sum: number, p) => sum + p.views, 0);
     stats.publishedCount = posts.filter((p) => p.status === "PUBLISHED").length;
     stats.draftsCount = posts.filter((p) => p.status === "DRAFT").length;
     stats.subscribersCount = subscribers;
@@ -122,11 +122,10 @@ export default async function DashboardPage() {
                         {post.title}
                       </td>
                       <td className="py-3.5 text-center">
-                        <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          post.status === "PUBLISHED"
-                            ? "bg-green-50 text-green-700 dark:bg-green-950/20 dark:text-green-400"
-                            : "bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400"
-                        }`}>
+                        <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${post.status === "PUBLISHED"
+                          ? "bg-green-50 text-green-700 dark:bg-green-950/20 dark:text-green-400"
+                          : "bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400"
+                          }`}>
                           {post.status}
                         </span>
                       </td>
