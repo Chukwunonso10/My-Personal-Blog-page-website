@@ -69,6 +69,7 @@ export default async function DashboardPage() {
         </p>
       </div>
 
+
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {cardData.map((card) => {
