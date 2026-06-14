@@ -37,8 +37,6 @@ export async function createComment(
         postId,
         userId: dbUser.id,
       },
-    }).catch((e) => {
-      throw e;
     });
 
     revalidatePath(`/articles/${postSlug}`);
