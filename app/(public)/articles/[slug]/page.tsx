@@ -267,7 +267,7 @@ export default async function ArticlePage({ params }: Props) {
                     {article.author.image ? (
                       <img src={article.author.image} alt="" className="w-full h-full rounded-full" />
                     ) : (
-                      article.author.username?.slice(0, 2).toUpperCase()
+                      (article.author.username || "Staff Writer").slice(0, 2).toUpperCase()
                     )}
                   </div>
                   <span className="font-medium text-neutral-800 dark:text-neutral-200">

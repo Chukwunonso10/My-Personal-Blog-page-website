@@ -121,7 +121,7 @@ export function CommentsSection({ postId, postSlug, initialComments }: CommentsS
                 {comment.user.image ? (
                   <img src={comment.user.image} alt="User Avatar" className="w-full h-full rounded-full" />
                 ) : (
-                  comment.user.username?.slice(0, 2).toUpperCase() || "US"
+                  (comment.user.username || "User").slice(0, 2).toUpperCase()
                 )}
               </div>
               <div className="space-y-1.5 flex-1 bg-white border border-stone-200/50 dark:border-neutral-900 dark:bg-neutral-900/5 p-4 rounded-md">
