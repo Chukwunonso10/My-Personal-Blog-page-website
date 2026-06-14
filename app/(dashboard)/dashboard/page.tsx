@@ -38,9 +38,9 @@ export default async function DashboardPage() {
       prisma.newsletterSubscriber.count(),
     ]);
 
-    stats.totalViews = posts.reduce((sum: number, p) => sum + p.views, 0);
-    stats.publishedCount = posts.filter((p) => p.status === "PUBLISHED").length;
-    stats.draftsCount = posts.filter((p) => p.status === "DRAFT").length;
+    stats.totalViews = posts.reduce((sum: number, p: { views: number }) => sum + p.views, 0);
+    stats.publishedCount = posts.filter((p: { status: string }) => p.status === "PUBLISHED").length;
+    stats.draftsCount = posts.filter((p: { status: string }) => p.status === "DRAFT").length;
     stats.subscribersCount = subscribers;
     stats.topPosts = posts.slice(0, 5);
     dbSuccess = true;
