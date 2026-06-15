@@ -242,3 +242,28 @@ export async function togglePostStatus(id: string) {
     return { success: false, message: err.message };
   }
 }
+
+// Server Action: Check if user is Admin or Writer
+export async function checkIsAdminOrWriter(): Promise<boolean> {
+  try {
+    const clerkUser = await currentUser();
+    if (!clerkUser) return false;
+
+    const isAdminEmail =
+      clerkUser.emailAddresses[0]?.emailAddress.toLowerCase() ===
+      process.env.ADMIN_EMAIL?.toLowerCase();
+
+    const dbUser = await prisma.user.findUnique({
+      where: { clerkId: clerkUser.id },
+      select: { role: true },
+    }).catch(() => null);
+
+    if (dbUser) {
+      return dbUser.role === "ADMIN" || dbUser.role === "WRITER";
+    }
+
+    return isAdminEmail;
+  } catch (err) {
+    return false;
+  }
+}

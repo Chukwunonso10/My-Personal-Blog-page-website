@@ -15,7 +15,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
-  title: "Aletheia | Editorial Publishing Platform",
+  title: "Chukwunonso's Blog | Editorial Publishing Platform",
   description: "A premium publishing platform for Christian teachings, Bible studies, and technology articles.",
 };
 

@@ -244,7 +244,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const url = `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/articles/${article.slug}`;
 
   return {
-    title: `${article.title} | Aletheia`,
+    title: `${article.title} | Chukwunonso's Blog`,
     description: article.excerpt,
     alternates: {
       canonical: url,

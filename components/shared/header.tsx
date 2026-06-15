@@ -1,15 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Show, UserButton } from "@clerk/nextjs";
+import { Show, UserButton, useUser } from "@clerk/nextjs";
 import { ThemeToggle } from "./theme-toggle";
 import { Menu, X, BookOpen, PenTool, Search } from "lucide-react";
+import { checkIsAdminOrWriter } from "@/actions/posts";
 
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { user } = useUser();
 
   const navigation = [
     { name: "Articles", href: "/articles" },
@@ -19,6 +22,14 @@ export function Header() {
 
   const isActive = (path: string) => pathname === path;
 
+  useEffect(() => {
+    if (user) {
+      checkIsAdminOrWriter().then(setIsAdmin);
+    } else {
+      setIsAdmin(false);
+    }
+  }, [user]);
+
   return (
     <header className="sticky top-0 z-40 w-full border-b border-stone-200/80 bg-stone-50/80 backdrop-blur-md dark:border-neutral-800/80 dark:bg-neutral-950/80 transition-colors duration-300">
       <div className="mx-auto max-w-7xl px-6 sm:px-8">
@@ -27,7 +38,7 @@ export function Header() {
           <div className="flex items-center">
             <Link href="/" className="group flex items-center space-x-2">
               <span className="font-serif text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
-                Aletheia
+                Chukwunonso's Blog
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-stone-900 dark:bg-stone-50" />
             </Link>
@@ -55,13 +66,15 @@ export function Header() {
             <ThemeToggle />
             
             <Show when="signed-in">
-              <Link
-                href="/dashboard"
-                className="flex items-center space-x-1 text-xs font-semibold px-3  h-9 rounded-md border border-stone-200 dark:border-neutral-800 hover:bg-stone-100 dark:hover:bg-neutral-900 text-neutral-700 dark:text-neutral-300 transition-all duration-200"
-              >
-                <PenTool className="w-3.5 h-3.5" />
-                <span>Dashboard</span>
-              </Link>
+              {isAdmin && (
+                <Link
+                  href="/dashboard"
+                  className="flex items-center space-x-1 text-xs font-semibold px-3  h-9 rounded-md border border-stone-200 dark:border-neutral-800 hover:bg-stone-100 dark:hover:bg-neutral-900 text-neutral-700 dark:text-neutral-300 transition-all duration-200"
+                >
+                  <PenTool className="w-3.5 h-3.5" />
+                  <span>Dashboard</span>
+                </Link>
+              )}
               <UserButton
                 appearance={{
                   elements: {
@@ -126,14 +139,16 @@ export function Header() {
           
           <div className="pt-4 border-t border-stone-200 dark:border-neutral-800 flex flex-col gap-3">
             <Show when="signed-in">
-              <Link
-                href="/dashboard"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center space-x-2 text-sm font-medium w-full py-2.5 rounded-md border border-stone-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300"
-              >
-                <PenTool className="w-4 h-4" />
-                <span>Dashboard</span>
-              </Link>
+              {isAdmin && (
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center space-x-2 text-sm font-medium w-full py-2.5 rounded-md border border-stone-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300"
+                >
+                  <PenTool className="w-4 h-4" />
+                  <span>Dashboard</span>
+                </Link>
+              )}
               <div className="flex justify-center py-2">
                 <UserButton />
               </div>

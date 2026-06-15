@@ -75,7 +75,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
         <div className="p-6">
           <div className="flex items-center space-x-2 mb-8">
             <span className="font-serif text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
-              Aletheia
+              Chukwunonso's Blog
             </span>
             <span className="h-1.5 w-1.5 rounded-full bg-stone-900 dark:bg-stone-50" />
             <span className="text-[9px] border border-stone-200 dark:border-neutral-800 text-neutral-400 dark:text-neutral-500 uppercase tracking-widest px-1 rounded ml-2">
@@ -124,7 +124,7 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
           <div className="flex items-center space-x-2">
             <MobileNav />
             <span className="font-serif text-md font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
-              Aletheia
+              Chukwunonso's Blog
             </span>
             <span className="h-1.5 w-1.5 rounded-full bg-stone-900 dark:bg-stone-50" />
           </div>

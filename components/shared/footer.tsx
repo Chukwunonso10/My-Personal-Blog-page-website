@@ -43,7 +43,7 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <span className="font-serif text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
-                Aletheia
+                Chukwunonso's Blog
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-stone-900 dark:bg-stone-50" />
             </div>
@@ -143,7 +143,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-stone-200 dark:border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-neutral-400">
-          <p>© {currentYear} Aletheia Publishing. All rights reserved.</p>
+          <p>© {currentYear} Chukwunonso's Blog Publishing. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link href="/privacy" className="hover:text-neutral-600 dark:hover:text-neutral-300">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-neutral-600 dark:hover:text-neutral-300">Terms of Service</Link>

@@ -1,18 +1,19 @@
 import React from "react";
 import { prisma } from "@/lib/db";
-import { Eye, FileText, FileEdit, Users, Award, TrendingUp } from "lucide-react";
+import { Eye, FileText, FileEdit, Users, TrendingUp, MessageSquare } from "lucide-react";
 
 // Mock analytics details
 const MOCK_ANALYTICS = {
   totalViews: 1280,
+  totalComments: 42,
   publishedCount: 4,
   draftsCount: 2,
   subscribersCount: 84,
   topPosts: [
-    { id: "mock-1", title: "The Architecture of Grace: Faith Meets Reason", views: 412, status: "PUBLISHED" },
-    { id: "mock-2", title: "Building Production-Ready REST APIs with Next.js 16 and Prisma", views: 389, status: "PUBLISHED" },
-    { id: "mock-3", title: "Pauline Theology: Exploring Justification by Faith", views: 295, status: "PUBLISHED" },
-    { id: "mock-4", title: "State Management in React 19: Beyond useEffect Hooks", views: 184, status: "PUBLISHED" },
+    { id: "mock-1", title: "The Architecture of Grace: Faith Meets Reason", views: 412, status: "PUBLISHED", commentsCount: 18 },
+    { id: "mock-2", title: "Building Production-Ready REST APIs with Next.js 16 and Prisma", views: 389, status: "PUBLISHED", commentsCount: 12 },
+    { id: "mock-3", title: "Pauline Theology: Exploring Justification by Faith", views: 295, status: "PUBLISHED", commentsCount: 8 },
+    { id: "mock-4", title: "State Management in React 19: Beyond useEffect Hooks", views: 184, status: "PUBLISHED", commentsCount: 4 },
   ]
 };
 
@@ -21,6 +22,7 @@ export const dynamic = "force-dynamic";
 export default async function DashboardPage() {
   let stats = {
     totalViews: 0,
+    totalComments: 0,
     publishedCount: 0,
     draftsCount: 0,
     subscribersCount: 0,
@@ -33,14 +35,23 @@ export default async function DashboardPage() {
     const [posts, subscribers] = await Promise.all([
       prisma.post.findMany({
         orderBy: { views: "desc" },
-        select: { id: true, title: true, views: true, status: true },
-      }) as Promise<Array<{ id: string; title: string; views: number; status: "DRAFT" | "PUBLISHED" }>>,
+        select: {
+          id: true,
+          title: true,
+          views: true,
+          status: true,
+          _count: {
+            select: { comments: true },
+          },
+        },
+      }),
       prisma.newsletterSubscriber.count(),
     ]);
 
-    stats.totalViews = posts.reduce((sum: number, p: { views: number }) => sum + p.views, 0);
-    stats.publishedCount = posts.filter((p: { status: string }) => p.status === "PUBLISHED").length;
-    stats.draftsCount = posts.filter((p: { status: string }) => p.status === "DRAFT").length;
+    stats.totalViews = posts.reduce((sum: number, p: any) => sum + p.views, 0);
+    stats.totalComments = posts.reduce((sum: number, p: any) => sum + (p._count?.comments || 0), 0);
+    stats.publishedCount = posts.filter((p: any) => p.status === "PUBLISHED").length;
+    stats.draftsCount = posts.filter((p: any) => p.status === "DRAFT").length;
     stats.subscribersCount = subscribers;
     stats.topPosts = posts.slice(0, 5);
     dbSuccess = true;
@@ -52,6 +63,7 @@ export default async function DashboardPage() {
 
   const cardData = [
     { name: "Total Views", value: finalStats.totalViews, icon: Eye, color: "text-blue-500" },
+    { name: "Total Comments", value: finalStats.totalComments, icon: MessageSquare, color: "text-rose-500" },
     { name: "Published Articles", value: finalStats.publishedCount, icon: FileText, color: "text-green-500" },
     { name: "Drafts", value: finalStats.draftsCount, icon: FileEdit, color: "text-amber-500" },
     { name: "Newsletter Subscribers", value: finalStats.subscribersCount, icon: Users, color: "text-purple-500" },
@@ -71,7 +83,7 @@ export default async function DashboardPage() {
 
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
         {cardData.map((card) => {
           const Icon = card.icon;
           return (
@@ -114,27 +126,34 @@ export default async function DashboardPage() {
                     <th className="py-2.5 font-medium">Article Title</th>
                     <th className="py-2.5 font-medium text-center">Status</th>
                     <th className="py-2.5 font-medium text-right">Views</th>
+                    <th className="py-2.5 font-medium text-right">Comments</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100 dark:divide-neutral-900">
-                  {finalStats.topPosts.map((post: any) => (
-                    <tr key={post.id} className="text-neutral-700 dark:text-neutral-300">
-                      <td className="py-3.5 font-medium truncate max-w-xs sm:max-w-md">
-                        {post.title}
-                      </td>
-                      <td className="py-3.5 text-center">
-                        <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${post.status === "PUBLISHED"
-                          ? "bg-green-50 text-green-700 dark:bg-green-950/20 dark:text-green-400"
-                          : "bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400"
-                          }`}>
-                          {post.status}
-                        </span>
-                      </td>
-                      <td className="py-3.5 text-right font-mono text-xs">
-                        {post.views.toLocaleString()}
-                      </td>
-                    </tr>
-                  ))}
+                  {finalStats.topPosts.map((post: any) => {
+                    const commentsCount = post.commentsCount ?? post._count?.comments ?? 0;
+                    return (
+                      <tr key={post.id} className="text-neutral-700 dark:text-neutral-300">
+                        <td className="py-3.5 font-medium truncate max-w-xs sm:max-w-md">
+                          {post.title}
+                        </td>
+                        <td className="py-3.5 text-center">
+                          <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${post.status === "PUBLISHED"
+                            ? "bg-green-50 text-green-700 dark:bg-green-950/20 dark:text-green-400"
+                            : "bg-amber-50 text-amber-700 dark:bg-amber-950/20 dark:text-amber-400"
+                            }`}>
+                            {post.status}
+                          </span>
+                        </td>
+                        <td className="py-3.5 text-right font-mono text-xs">
+                          {post.views.toLocaleString()}
+                        </td>
+                        <td className="py-3.5 text-right font-mono text-xs">
+                          {commentsCount.toLocaleString()}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

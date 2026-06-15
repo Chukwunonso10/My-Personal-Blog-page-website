@@ -13,6 +13,8 @@ interface PostItem {
   views: number;
   category: { name: string };
   createdAt: Date;
+  _count?: { comments: number };
+  commentsCount?: number;
 }
 
 interface PostsTableProps {
@@ -80,13 +82,14 @@ export function PostsTable({ initialPosts, readOnly = false }: PostsTableProps) 
               <th className="p-4 font-medium">Category</th>
               <th className="p-4 font-medium text-center">Status</th>
               <th className="p-4 font-medium text-right">Views</th>
+              <th className="p-4 font-medium text-right">Comments</th>
               <th className="p-4 font-medium text-center">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-100 dark:divide-neutral-900">
             {posts.length === 0 ? (
               <tr>
-                <td colSpan={5} className="text-center py-12 text-neutral-400 text-xs">
+                <td colSpan={6} className="text-center py-12 text-neutral-400 text-xs">
                   No posts found. Create your first post to begin.
                 </td>
               </tr>
@@ -121,6 +124,7 @@ export function PostsTable({ initialPosts, readOnly = false }: PostsTableProps) 
                     </button>
                   </td>
                   <td className="p-4 text-right font-mono text-xs">{post.views.toLocaleString()}</td>
+                  <td className="p-4 text-right font-mono text-xs">{(post.commentsCount ?? post._count?.comments ?? 0).toLocaleString()}</td>
                   <td className="p-4">
                     <div className="flex items-center justify-center space-x-2.5">
                       {post.status === "PUBLISHED" && (

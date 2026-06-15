@@ -12,6 +12,7 @@ const MOCK_POSTS = [
     slug: "the-architecture-of-grace",
     status: "PUBLISHED" as const,
     views: 412,
+    commentsCount: 18,
     category: { name: "Christian Living" },
     createdAt: new Date("2026-06-10T10:00:00Z"),
   },
@@ -21,6 +22,7 @@ const MOCK_POSTS = [
     slug: "building-apis-nextjs-prisma",
     status: "PUBLISHED" as const,
     views: 389,
+    commentsCount: 12,
     category: { name: "APIs" },
     createdAt: new Date("2026-06-12T09:15:00Z"),
   },
@@ -37,6 +39,9 @@ export default async function DashboardPostsPage() {
       orderBy: { createdAt: "desc" },
       include: {
         category: { select: { name: true } },
+        _count: {
+          select: { comments: true },
+        },
       },
     });
     dbSuccess = true;
