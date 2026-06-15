@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   const eventType = evt.type;
 
   if (eventType === "user.created") {
-    const { id: clerkId, email_addresses, username, image_url } = evt.data;
+    const { id: clerkId, email_addresses, first_name, username, image_url } = evt.data as any;
     const email = email_addresses?.[0]?.email_address;
 
     if (!clerkId || !email) {
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
         data: {
           clerkId,
           email,
-          username: username || `user_${Math.random().toString(36).slice(2, 7)}`,
+          username: first_name || username || `user_${Math.random().toString(36).slice(2, 7)}`,
           image: image_url || null,
           role,
         },
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.updated") {
-    const { id: clerkId, email_addresses, username, image_url } = evt.data;
+    const { id: clerkId, email_addresses, first_name, username, image_url } = evt.data as any;
     const email = email_addresses?.[0]?.email_address;
 
     if (!clerkId || !email) {
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
         where: { clerkId },
         data: {
           email,
-          username: username || undefined,
+          username: first_name || username || undefined,
           image: image_url || null,
         },
       });
