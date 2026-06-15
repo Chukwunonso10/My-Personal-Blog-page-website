@@ -275,7 +275,7 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
                     </div>
                     <div className="space-y-2">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                        {post.category.name}
+                        {post.category?.name}
                       </span>
                       <h2 className="font-serif text-lg font-bold tracking-tight text-neutral-900 dark:text-neutral-50 hover:underline leading-snug">
                         <Link href={`/articles/${post.slug}`}>{post.title}</Link>
@@ -288,7 +288,7 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
                   <div className="flex items-center justify-between text-[11px] text-neutral-400 pt-5 mt-5 border-t border-stone-100 dark:border-neutral-900">
                     <span className="flex items-center gap-1">
                       <User className="w-3 h-3" />
-                      {post.author.username || "Staff Writer"}
+                      {post.author?.username || "Staff Writer"}
                     </span>
                     <span>{post.readingTime} min read</span>
                   </div>

@@ -50,6 +50,7 @@ const components = {
     return <CodeBlock {...props} />;
   },
   Callout,
+  Callback: Callout,
   YouTubeEmbed,
 };
 

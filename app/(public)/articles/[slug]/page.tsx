@@ -317,7 +317,7 @@ export default async function ArticlePage({ params }: Props) {
     "datePublished": article.publishedAt?.toISOString(),
     "author": {
       "@type": "Person",
-      "name": article.author.username || "Staff Writer",
+      "name": article.author?.username || "Staff Writer",
     },
   };
 

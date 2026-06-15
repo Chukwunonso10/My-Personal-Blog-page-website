@@ -104,7 +104,7 @@ export default async function HomePage() {
             </div>
             <div className="lg:col-span-5 space-y-6">
               <span className="inline-flex items-center text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-                {featuredPost.category.name}
+                {featuredPost.category?.name}
               </span>
               <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50 leading-tight">
                 <Link href={`/articles/${featuredPost.slug}`} className="hover:underline">
@@ -117,7 +117,7 @@ export default async function HomePage() {
               <div className="flex items-center space-x-4 text-xs text-neutral-500 dark:text-neutral-400">
                 <div className="flex items-center space-x-1.5">
                   <User className="w-3.5 h-3.5" />
-                  <span>{featuredPost.author.username || "Staff Writer"}</span>
+                  <span>{featuredPost.author?.username || "Staff Writer"}</span>
                 </div>
                 <div className="flex items-center space-x-1.5">
                   <Clock className="w-3.5 h-3.5" />
@@ -165,7 +165,7 @@ export default async function HomePage() {
                 </div>
                 <div className="sm:col-span-2 space-y-3">
                   <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-                    {post.category.name}
+                    {post.category?.name}
                   </span>
                   <h3 className="font-serif text-xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50 group-hover:underline">
                     <Link href={`/articles/${post.slug}`}>{post.title}</Link>
@@ -174,7 +174,7 @@ export default async function HomePage() {
                     {post.excerpt}
                   </p>
                   <div className="flex items-center space-x-4 text-xs text-neutral-400 dark:text-neutral-500 pt-1">
-                    <span>{post.author.username || "Staff Writer"}</span>
+                    <span>{post.author?.username || "Staff Writer"}</span>
                     <span>•</span>
                     <span>{post.readingTime} min read</span>
                   </div>
@@ -199,13 +199,13 @@ export default async function HomePage() {
                 </span>
                 <div className="space-y-1">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                    {post.category.name}
+                    {post.category?.name}
                   </span>
                   <h4 className="font-serif text-sm font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 hover:underline">
                     <Link href={`/articles/${post.slug}`}>{post.title}</Link>
                   </h4>
                   <div className="flex items-center space-x-2 text-[10px] text-neutral-400 pt-0.5">
-                    <span>{post.author.username || "Staff Writer"}</span>
+                    <span>{post.author?.username || "Staff Writer"}</span>
                     <span>•</span>
                     <span>{post.views} views</span>
                   </div>
